@@ -1,16 +1,74 @@
-# React + Vite
+# Yoiwa Shops 🇬🇭
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Asankrangwa's very own online marketplace — shop local, shop smart!
 
-Currently, two official plugins are available:
+## About
+Yoiwa Shops is a full-stack e-commerce platform built for the Asankrangwa community in Ghana. It allows local sellers to list products and customers to shop online with Mobile Money payment and real-time location-based delivery.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
+- **Frontend:** React + Vite, inline styles
+- **Backend:** Node.js + Express
+- **Database:** MongoDB (mongodb-memory-server for development)
+- **Maps:** Leaflet + OpenStreetMap
+- **Auth:** JWT + bcryptjs
 
-## React Compiler
+## Features Built
+- Customer portal (browse, cart, checkout)
+- Seller dashboard
+- Rider dashboard with Google Maps/Waze directions
+- Admin dashboard
+- User registration and login
+- Product listing from database
+- Real-time location detection on checkout
+- Mobile Money payment (MTN, Vodafone, AirtelTigo)
+- Order placement and tracking
+- Pin drop delivery location
+- House description for delivery
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Pages
+- Home — product listing
+- Sign In / Register
+- Cart
+- Checkout — with map pin drop and real-time location
+- Order Confirmation
+- Seller Dashboard
+- Rider Dashboard — enter Order ID to get delivery details and directions
+- Admin Dashboard
 
-## Expanding the ESLint configuration
+## User Roles
+- **Customer** — browse and buy products
+- **Seller** — manage products and orders
+- **Rider** — enter Order ID to see delivery details and get directions
+- **Admin** — full platform control
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting Started
+
+### Frontend
+```bash
+npm install
+npm run dev
+```
+
+### Backend
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+## What's Still Needed
+- Real cart functionality (add/remove items dynamically)
+- Product detail page
+- Seller registration flow
+- Real Mobile Money payment integration (Paystack or Hubtel)
+- Product image upload
+- Search functionality
+- SMS/email notifications
+- Deploy frontend (Vercel) and backend (Render)
+- Switch from mongodb-memory-server to MongoDB Atlas
+
+## Color Scheme
+- Dark header: #131921
+- Green (Ghana): #006B3F
+- Gold (Ghana): #FCD116
+- Background: #EAEDED
