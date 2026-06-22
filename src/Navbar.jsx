@@ -31,8 +31,9 @@ function Navbar({ setPage }) {
           <>
             <span onClick={() => setPage('signin')} style={{cursor: 'pointer'}}>Sign In</span>
             <span onClick={() => setPage('register')} style={{cursor: 'pointer'}}>Register</span>
+            <span onClick={() => setPage('sellerregister')} style={{cursor: 'pointer'}}>Sell on Yoiwa</span>
           </>
-        )}
+        )}  
 
         {user && user.role === 'customer' && (
           <span style={{color: '#FCD116'}}>Hi, {user.name.split(' ')[0]}!</span>

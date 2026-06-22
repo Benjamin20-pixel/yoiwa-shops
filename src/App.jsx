@@ -11,29 +11,43 @@ import Confirmation from './Confirmation'
 import SellerDashboard from './SellerDashboard'
 import AdminDashboard from './AdminDashboard'
 import RiderDashboard from './RiderDashboard'
+import SellerRegister from './SellerRegister'
+import SellerSignIn from './SellerSignIn'
 
 function App() {
   const [page, setPage] = useState('home')
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  const getHomePage = () => {
+    if (user?.role === 'seller') return 'seller'
+    if (user?.role === 'rider') return 'rider'
+    if (user?.role === 'admin') return 'admin'
+    return 'home'
+  }
+
+  const currentPage = page === 'home' ? getHomePage() : page
 
   return (
     <div>
       <Navbar setPage={setPage} />
       
-      {page === 'home' && (
+      {currentPage === 'home' && (
         <>
           <Hero />
           <ProductGrid setPage={setPage} />
         </>
       )}
 
-      {page === 'signin' && <SignIn setPage={setPage} />}
-      {page === 'register' && <Register setPage={setPage} />}
-      {page === 'cart' && <Cart setPage={setPage} />}
-      {page === 'checkout' && <Checkout setPage={setPage} />}
-      {page === 'confirmation' && <Confirmation setPage={setPage} />}
-      {page === 'seller' && <SellerDashboard setPage={setPage} />}
-      {page === 'admin' && <AdminDashboard setPage={setPage} />}
-      {page === 'rider' && <RiderDashboard setPage={setPage} />}
+      {currentPage === 'signin' && <SignIn setPage={setPage} />}
+      {currentPage === 'register' && <Register setPage={setPage} />}
+      {currentPage === 'cart' && <Cart setPage={setPage} />}
+      {currentPage === 'checkout' && <Checkout setPage={setPage} />}
+      {currentPage === 'confirmation' && <Confirmation setPage={setPage} />}
+      {currentPage === 'seller' && <SellerDashboard setPage={setPage} />}
+      {currentPage === 'admin' && <AdminDashboard setPage={setPage} />}
+      {currentPage === 'rider' && <RiderDashboard setPage={setPage} />}
+      {currentPage === 'sellerregister' && <SellerRegister setPage={setPage} />}
+      {currentPage === 'sellersignin' && <SellerSignIn setPage={setPage} />}
 
       <Footer />
     </div>

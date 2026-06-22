@@ -8,7 +8,7 @@ const router = express.Router()
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, phone, password } = req.body
+    const { name, email, phone, password, role, storeName, storeDescription, category } = req.body
 
     // Check if user already exists
     const existingUser = await User.findOne({ email })
@@ -24,7 +24,11 @@ router.post('/register', async (req, res) => {
       name,
       email,
       phone,
-      password: hashedPassword
+      password: hashedPassword,
+      role: role || 'customer',
+      storeName,
+      storeDescription,
+      category
     })
 
     // Generate token
@@ -38,7 +42,8 @@ router.post('/register', async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        role: user.role
+        role: user.role,
+        storeName: user.storeName
       }
     })
   } catch (err) {

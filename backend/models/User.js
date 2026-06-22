@@ -22,6 +22,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['customer', 'seller', 'admin', 'rider'],
     default: 'customer'
+  },
+  storeName: {
+    type: String,
+    default: ''
+  },
+  storeDescription: {
+    type: String,
+    default: ''
+  },
+  category: {
+    type: String,
+    default: ''
   }
 }, { timestamps: true })
 
