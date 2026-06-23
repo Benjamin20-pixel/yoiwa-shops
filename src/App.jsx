@@ -13,6 +13,8 @@ import AdminDashboard from './AdminDashboard'
 import RiderDashboard from './RiderDashboard'
 import SellerRegister from './SellerRegister'
 import SellerSignIn from './SellerSignIn'
+import RiderRegister from './RiderRegister'
+import RiderSignIn from './RiderSignIn'
 
 function App() {
   const [page, setPage] = useState('home')
@@ -54,8 +56,10 @@ function App() {
       {currentPage === 'rider' && <RiderDashboard setPage={setPage} />}
       {currentPage === 'sellerregister' && <SellerRegister setPage={setPage} />}
       {currentPage === 'sellersignin' && <SellerSignIn setPage={setPage} />}
+      {currentPage === 'riderregister' && <RiderRegister setPage={setPage} />}
+      {currentPage === 'ridersignin' && <RiderSignIn setPage={setPage} />}
 
-      <Footer />
+      <Footer setPage={setPage} />
     </div>
   )
 }

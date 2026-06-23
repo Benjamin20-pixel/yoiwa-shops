@@ -1,4 +1,4 @@
-function Footer() {
+function Footer({ setPage }) {
   return (
     <footer style={{backgroundColor: '#131921', color: 'white', padding: '40px 20px', marginTop: '40px'}}>
       <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '30px', marginBottom: '30px'}}>
@@ -14,8 +14,9 @@ function Footer() {
         </div>
         <div>
           <h4 style={{marginBottom: '12px'}}>Make Money With Us</h4>
-          <p style={{color: '#aaa', fontSize: '0.9rem', marginBottom: '8px', cursor: 'pointer'}}>Sell on Yoiwa Shops</p>
-          <p style={{color: '#aaa', fontSize: '0.9rem', cursor: 'pointer'}}>Become an Affiliate</p>
+          <p onClick={() => setPage('sellerregister')} style={{color: '#aaa', fontSize: '0.9rem', marginBottom: '8px', cursor: 'pointer'}}>Sell on Yoiwa Shops</p>
+          <p style={{color: '#aaa', fontSize: '0.9rem', marginBottom: '8px', cursor: 'pointer'}}>Become an Affiliate</p>
+          <p onClick={() => setPage('riderregister')} style={{color: '#aaa', fontSize: '0.9rem', cursor: 'pointer'}}>Become a Rider</p>
         </div>
         <div>
           <h4 style={{marginBottom: '12px'}}>Let Us Help You</h4>
