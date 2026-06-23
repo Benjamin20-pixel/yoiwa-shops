@@ -16,6 +16,7 @@ import SellerSignIn from './SellerSignIn'
 
 function App() {
   const [page, setPage] = useState('home')
+  const [searchQuery, setSearchQuery] = useState('')
   const user = JSON.parse(localStorage.getItem('user'))
 
   const getHomePage = () => {
@@ -27,14 +28,19 @@ function App() {
 
   const currentPage = page === 'home' ? getHomePage() : page
 
+  const handleSearch = (query) => {
+    setSearchQuery(query)
+    setPage('home')
+  }
+
   return (
     <div>
-      <Navbar setPage={setPage} />
+      <Navbar setPage={setPage} onSearch={handleSearch} />
       
       {currentPage === 'home' && (
         <>
           <Hero />
-          <ProductGrid setPage={setPage} />
+          <ProductGrid setPage={setPage} searchQuery={searchQuery} />
         </>
       )}
 

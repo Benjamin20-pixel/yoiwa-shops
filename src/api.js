@@ -18,7 +18,7 @@ export const registerUser = (data) => API.post('/users/register', data)
 export const loginUser = (data) => API.post('/users/login', data)
 
 // Product routes
-export const getProducts = () => API.get('/products')
+export const getProducts = (search = '', category = '') => API.get(`/products?search=${search}&category=${category}`)
 export const addProduct = (data) => API.post('/products', data)
 export const deleteProduct = (id) => API.delete(`/products/${id}`)
 

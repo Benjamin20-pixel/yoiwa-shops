@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react'
 import { getProducts } from './api'
 
-function ProductGrid({ setPage }) {
+function ProductGrid({ setPage, searchQuery }) {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
+
+  const categories = ['All', 'Electronics', 'Fashion', 'Home', 'Beauty', 'Food', 'Agriculture', 'Services']
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true)
       try {
-        const res = await getProducts()
+        const category = selectedCategory === 'All' ? '' : selectedCategory
+        const res = await getProducts(searchQuery || '', category)
         setProducts(res.data)
       } catch (err) {
         setError('Failed to load products')
@@ -17,7 +22,7 @@ function ProductGrid({ setPage }) {
       setLoading(false)
     }
     fetchProducts()
-  }, [])
+  }, [searchQuery, selectedCategory])
 
   if (loading) return (
     <div style={{textAlign: 'center', padding: '60px', fontSize: '1.2rem', color: '#555'}}>
@@ -31,32 +36,67 @@ function ProductGrid({ setPage }) {
     </div>
   )
 
-  if (products.length === 0) return (
-    <div style={{textAlign: 'center', padding: '60px'}}>
-      <p style={{fontSize: '1.2rem', color: '#555', marginBottom: '16px'}}>No products available yet.</p>
-      <p style={{color: '#888'}}>Be the first to sell on Yoiwa Shops!</p>
-    </div>
-  )
-
   return (
     <div style={{padding: '40px 20px', backgroundColor: '#EAEDED'}}>
-      <h2 style={{fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px', color: '#131921'}}>Featured Products</h2>
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px'}}>
-        {products.map(product => (
-          <div key={product._id} style={{backgroundColor: 'white', borderRadius: '8px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', cursor: 'pointer'}}>
-            <div style={{backgroundColor: '#EAEDED', height: '150px', borderRadius: '4px', marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>
-              {product.image ? <img src={product.image} alt={product.name} style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px'}} /> : '📦 No Image'}
-            </div>
-            <p style={{fontSize: '0.8rem', color: '#006B3F', marginBottom: '4px'}}>{product.category}</p>
-            <p style={{fontWeight: 'bold', marginBottom: '8px', color: '#131921'}}>{product.name}</p>
-            <p style={{color: '#006B3F', fontWeight: 'bold', marginBottom: '4px'}}>GH₵ {product.price}</p>
-            <p style={{color: '#888', fontSize: '0.8rem', marginBottom: '12px'}}>Stock: {product.stock}</p>
-            <button style={{width: '100%', backgroundColor: '#FCD116', border: 'none', padding: '8px', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer'}}>
-              Add to Cart
-            </button>
-          </div>
+
+      {searchQuery && (
+        <p style={{marginBottom: '16px', color: '#555', fontSize: '1rem'}}>
+          Showing results for <strong>"{searchQuery}"</strong> — {products.length} product(s) found
+        </p>
+      )}
+
+      {/* Category filter */}
+      <div style={{display: 'flex', gap: '10px', marginBottom: '24px', flexWrap: 'wrap'}}>
+        {categories.map(cat => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '20px',
+              border: 'none',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '0.85rem',
+              backgroundColor: selectedCategory === cat ? '#006B3F' : 'white',
+              color: selectedCategory === cat ? 'white' : '#131921',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
+            }}
+          >
+            {cat}
+          </button>
         ))}
       </div>
+
+      <h2 style={{fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '20px', color: '#131921'}}>
+        {searchQuery ? 'Search Results' : selectedCategory === 'All' ? 'Featured Products' : selectedCategory}
+      </h2>
+
+      {products.length === 0 ? (
+        <div style={{textAlign: 'center', padding: '60px'}}>
+          <p style={{fontSize: '1.2rem', color: '#555', marginBottom: '16px'}}>No products found.</p>
+          <p style={{color: '#888'}}>Try a different search or category.</p>
+        </div>
+      ) : (
+        <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px'}}>
+          {products.map(product => (
+            <div key={product._id} style={{backgroundColor: 'white', borderRadius: '8px', padding: '16px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', cursor: 'pointer'}}>
+              <div style={{backgroundColor: '#EAEDED', height: '150px', borderRadius: '4px', marginBottom: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#888'}}>
+                {product.image ? (
+                  <img src={product.image} alt={product.name} style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px'}} />
+                ) : 'No Image'}
+              </div>
+              <p style={{fontSize: '0.8rem', color: '#006B3F', marginBottom: '4px'}}>{product.category}</p>
+              <p style={{fontWeight: 'bold', marginBottom: '8px', color: '#131921'}}>{product.name}</p>
+              <p style={{color: '#006B3F', fontWeight: 'bold', marginBottom: '4px'}}>GH&#8373; {product.price}</p>
+              <p style={{color: '#888', fontSize: '0.8rem', marginBottom: '12px'}}>Stock: {product.stock}</p>
+              <button style={{width: '100%', backgroundColor: '#FCD116', border: 'none', padding: '8px', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer'}}>
+                Add to Cart
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

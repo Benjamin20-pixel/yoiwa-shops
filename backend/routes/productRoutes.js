@@ -21,7 +21,23 @@ const verifyToken = (req, res, next) => {
 // Get all products
 router.get('/', async (req, res) => {
   try {
-    const products = await Product.find().populate('seller', 'name email')
+    const { search, category } = req.query
+
+    let filter = {}
+
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } }
+      ]
+    }
+
+    if (category) {
+      filter.category = { $regex: category, $options: 'i' }
+    }
+
+    const products = await Product.find(filter).populate('seller', 'name email')
     res.json(products)
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message })
