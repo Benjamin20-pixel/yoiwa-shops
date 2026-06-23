@@ -15,10 +15,12 @@ import SellerRegister from './SellerRegister'
 import SellerSignIn from './SellerSignIn'
 import RiderRegister from './RiderRegister'
 import RiderSignIn from './RiderSignIn'
+import ProductDetail from './ProductDetail'
 
 function App() {
   const [page, setPage] = useState('home')
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const user = JSON.parse(localStorage.getItem('user'))
 
   const getHomePage = () => {
@@ -35,6 +37,11 @@ function App() {
     setPage('home')
   }
 
+  const handleProductClick = (productId) => {
+    setSelectedProduct(productId)
+    setPage('product')
+  }
+
   return (
     <div>
       <Navbar setPage={setPage} onSearch={handleSearch} />
@@ -42,7 +49,7 @@ function App() {
       {currentPage === 'home' && (
         <>
           <Hero />
-          <ProductGrid setPage={setPage} searchQuery={searchQuery} />
+          <ProductGrid setPage={setPage} searchQuery={searchQuery} onProductClick={handleProductClick} />
         </>
       )}
 
@@ -58,6 +65,7 @@ function App() {
       {currentPage === 'sellersignin' && <SellerSignIn setPage={setPage} />}
       {currentPage === 'riderregister' && <RiderRegister setPage={setPage} />}
       {currentPage === 'ridersignin' && <RiderSignIn setPage={setPage} />}
+      {currentPage === 'product' && <ProductDetail setPage={setPage} productId={selectedProduct} />}
 
       <Footer setPage={setPage} />
     </div>
