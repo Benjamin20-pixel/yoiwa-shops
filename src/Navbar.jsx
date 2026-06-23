@@ -33,7 +33,7 @@ function Navbar({ setPage, onSearch }) {
       </div>
 
       {isCustomer && (
-        <div style={{display: 'flex', flex: 1, margin: '0 20px'}}>
+        <div style={{display: 'flex', flex: 1, margin: '0 20px', backgroundColor: '#232F3E', borderRadius: '4px', padding: '4px'}}>
           <input
             type="text"
             value={searchQuery}
