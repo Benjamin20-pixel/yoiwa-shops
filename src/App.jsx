@@ -16,21 +16,25 @@ import SellerSignIn from './SellerSignIn'
 import RiderRegister from './RiderRegister'
 import RiderSignIn from './RiderSignIn'
 import ProductDetail from './ProductDetail'
+import AddProduct from './AddProduct'
 
 function App() {
   const [page, setPage] = useState('home')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedProduct, setSelectedProduct] = useState(null)
-  const user = JSON.parse(localStorage.getItem('user'))
 
-  const getHomePage = () => {
-    if (user?.role === 'seller') return 'seller'
-    if (user?.role === 'rider') return 'rider'
-    if (user?.role === 'admin') return 'admin'
-    return 'home'
+  const getCurrentPage = () => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    if (page === 'home') {
+      if (user?.role === 'seller') return 'seller'
+      if (user?.role === 'rider') return 'rider'
+      if (user?.role === 'admin') return 'admin'
+      return 'home'
+    }
+    return page
   }
 
-  const currentPage = page === 'home' ? getHomePage() : page
+  const currentPage = getCurrentPage()
 
   const handleSearch = (query) => {
     setSearchQuery(query)
@@ -66,6 +70,7 @@ function App() {
       {currentPage === 'riderregister' && <RiderRegister setPage={setPage} />}
       {currentPage === 'ridersignin' && <RiderSignIn setPage={setPage} />}
       {currentPage === 'product' && <ProductDetail setPage={setPage} productId={selectedProduct} />}
+      {currentPage === 'addproduct' && <AddProduct setPage={setPage} />}
 
       <Footer setPage={setPage} />
     </div>

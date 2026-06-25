@@ -27,3 +27,8 @@ export const addOrder = (data) => API.post('/orders', data)
 export const getOrders = () => API.get('/orders')
 export const getOrder = (id) => API.get(`/orders/${id}`)
 export const updateOrderStatus = (id, data) => API.put(`/orders/${id}/status`, data)
+
+// Upload image
+export const uploadImage = (formData) => API.post('/upload', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+})
