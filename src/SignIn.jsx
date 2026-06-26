@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { loginUser } from './api'
+import { GoogleLogin } from '@react-oauth/google'
+import axios from 'axios'
 
 function SignIn({ setPage }) {
   const [form, setForm] = useState({ email: '', password: '' })
@@ -26,6 +28,19 @@ function SignIn({ setPage }) {
       setError(err.response?.data?.message || 'Something went wrong')
     }
     setLoading(false)
+  }
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/users/google', {
+        token: credentialResponse.credential
+      })
+      localStorage.setItem('token', res.data.token)
+      localStorage.setItem('user', JSON.stringify(res.data.user))
+      setPage('home')
+    } catch (err) {
+      setError('Google sign in failed. Please try again.')
+    }
   }
 
   return (
@@ -65,6 +80,15 @@ function SignIn({ setPage }) {
         </p>
 
       </div>
+
+      <div style={{textAlign: 'center', margin: '16px 0', color: '#555'}}>— or —</div>
+
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={() => setError('Google sign in failed')}
+          width="100%"
+      />
+
     </div>
   )
 }

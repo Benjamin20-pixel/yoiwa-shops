@@ -2,6 +2,7 @@ import express from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
+import { OAuth2Client } from 'google-auth-library'
 
 const router = express.Router()
 
@@ -56,6 +57,52 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body
 
+    // Google Sign In
+    router.post('/google', async (req, res) => {
+      try {
+      const { token } = req.body
+      const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
+
+      const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: process.env.GOOGLE_CLIENT_ID
+      })
+
+      const payload = ticket.getPayload()
+      const { email, name, picture } = payload
+
+      // Check if user already exists
+      let user = await User.findOne({ email })
+
+      if (!user) {
+        // Create new user
+        user = await User.create({
+          name,
+          email,
+          phone: 'N/A',
+          password: Math.random().toString(36).slice(-8),
+          role: 'customer'
+        })
+      }
+
+      // Generate token
+      const jwtToken = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' })
+
+      res.json({
+        message: 'Google sign in successful',
+        token: jwtToken,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          role: user.role
+        }
+      })
+    } catch (err) {
+      res.status(500).json({ message: 'Google sign in failed', error: err.message })
+    }
+  })
     // Find user
     const user = await User.findOne({ email })
     if (!user) {
